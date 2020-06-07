@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private TextToSpeech tts;
     private ImageButton btnSpeak;
     private final int REQ_CODE_SPEECH_INPUT = 100;
+    private static final String USER_ID = "MOBILE_DEMO_USER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     questionView.setText(question.getQuestion());
                     changeAnswerVisibility(View.INVISIBLE);
 
-                    NetworkService.getInstance().getChatbotApi().ask(question).enqueue(new Callback<Answer>() {
+                    NetworkService.getInstance().getChatbotApi().ask(USER_ID, question).enqueue(new Callback<Answer>() {
                         @Override
                         public void onResponse(@NonNull Call<Answer> call, @NonNull Response<Answer> response) {
                             Answer answer = response.body();
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                                 speakOut(answer.getAnswer());
                             } else {
                                 Toast.makeText(getApplicationContext(),
-                                        "Server response error",
+                                        "Server response error1",
                                         Toast.LENGTH_LONG).show();
                             }
 
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         public void onFailure(@NonNull Call<Answer> call, @NonNull Throwable t) {
 
                             Toast.makeText(getApplicationContext(),
-                                    "Server response error",
+                                    "Server response error2" + t.getMessage(),
                                     Toast.LENGTH_LONG).show();
                             t.printStackTrace();
                         }
